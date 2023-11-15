@@ -1,16 +1,34 @@
-#Coding by Umut Özen
+#Coding By Umut Özen
 import requests
 from bs4 import BeautifulSoup
 
-url = "https://www.cnn.com"
+def get_form_details(form):
+    print("Form:")
+    print("Action:", form.get('action'))
+    print("Method:", form.get('method'))
 
-response = requests.get(url)
+    inputs = form.find_all('input')
+    for input_element in inputs:
+        print("Input:")
+        print("Type:", input_element.get('type'))
+        print("Name:", input_element.get('name'))
+        print("Value:", input_element.get('value'))
+        print("------")
 
-if response.status_code == 200:
-    soup = BeautifulSoup(response.content, 'html.parser')
+def main():
+    url = input("Please enter the URL: ") 
+   
+    if not url.startswith(("http://", "https://")):
+        url = "https://" + url
+
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
     forms = soup.find_all('form')
- 
+
     for form in forms:
-        print(form)
-else:
-    print("Error. HTTP Response Code:", response.status_code)
+        get_form_details(form)
+        print("URL:", url)
+        print("===================")
+
+if __name__ == "__main__":
+    main()
