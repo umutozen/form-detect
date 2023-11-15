@@ -13,4 +13,4 @@ if response.status_code == 200:
     for form in forms:
         print(form)
 else:
-    print("Error. HTTP Kodu:", response.status_code)
+    print("Error. HTTP Response Code:", response.status_code)
